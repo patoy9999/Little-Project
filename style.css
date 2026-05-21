@@ -1,0 +1,352 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f4ecd8;
+    background-image: radial-gradient(#e5baa0 1px, transparent 1px);
+    background-size: 24px 24px;
+    font-family: 'DynaPuff', cursive;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: #433422;
+    padding: 20px;
+}
+
+/* --- INTRO SCREEN OVERLAY --- */
+.intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f4ecd8;
+    background-image: radial-gradient(#e5baa0 1px, transparent 1px);
+    background-size: 24px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.intro-card {
+    text-align: center;
+    background: #fffdf4;
+    padding: 40px 30px;
+    border: 5px solid #433422;
+    border-radius: 24px;
+    box-shadow: 10px 10px 0px #433422;
+    max-width: 450px;
+    width: 90%;
+}
+
+.intro-card h1 {
+    font-family: 'Fredoka One', cursive;
+    color: #d9534f;
+    font-size: 2.2rem;
+    text-shadow: 3px 3px 0px #f0ad4e;
+    margin-bottom: 10px;
+}
+
+.intro-card p {
+    font-size: 1.1rem;
+    color: #68533a;
+    margin-bottom: 30px;
+}
+
+.enter-btn {
+    font-family: 'Fredoka One', cursive;
+    background-color: #f0ad4e;
+    color: #433422;
+    font-size: 1.2rem;
+    padding: 12px 28px;
+    border: 4px solid #433422;
+    border-radius: 30px;
+    box-shadow: 4px 4px 0px #433422;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.enter-btn:hover {
+    transform: scale(1.05);
+}
+
+.enter-btn:active {
+    transform: translateY(4px) translateX(4px);
+    box-shadow: 0px 0px 0px #433422;
+}
+
+/* --- MAIN CONTAINER --- */
+.container {
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Fredoka One', cursive;
+    color: #d9534f;
+    font-size: 2.8rem;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    text-shadow: 4px 4px 0px #f0ad4e, 7px 7px 0px #433422;
+    margin-bottom: 15px;
+    line-height: 1.1;
+}
+
+.instruction {
+    font-size: 1.1rem;
+    color: #68533a;
+    background: #f9e7b9;
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: 3px solid #433422;
+    box-shadow: 4px 4px 0px #433422;
+    margin-bottom: 50px;
+    display: inline-block;
+}
+
+/* --- RETRO CAKE --- */
+.cake-container {
+    position: relative;
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 60px;
+}
+
+.cake {
+    position: relative;
+    width: 240px;
+    height: 120px;
+    background: #e9907a;
+    border: 5px solid #433422;
+    border-radius: 20px 20px 4px 4px;
+    box-shadow: 8px 8px 0px #433422;
+}
+
+.cake::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    background: #f0ad4e;
+    border-bottom: 5px solid #433422;
+    border-radius: 14px 14px 20px 20px;
+    top: 0;
+    left: 0;
+}
+
+.cherry-pipes {
+    position: absolute;
+    width: 100%;
+    top: -12px;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 20px;
+}
+
+.cherry {
+    width: 16px;
+    height: 16px;
+    background: #d9534f;
+    border: 3px solid #433422;
+    border-radius: 50%;
+}
+
+/* --- CANDLE & FLAME --- */
+.candle {
+    position: absolute;
+    width: 18px;
+    height: 75px;
+    background: repeating-linear-gradient(
+        45deg,
+        #5bc0de,
+        #5bc0de 10px,
+        #f0f8ff 10px,
+        #f0f8ff 20px
+    );
+    border: 4px solid #433422;
+    bottom: 120px;
+    border-radius: 4px;
+}
+
+.flame {
+    position: absolute;
+    width: 20px;
+    height: 32px;
+    background: #f0ad4e;
+    border: 3px solid #433422;
+    border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+    top: -42px;
+    left: -5px;
+    animation: retroFlicker 0.4s steps(4) infinite alternate;
+    transform-origin: center bottom;
+    box-shadow: 0 0 15px rgba(240, 173, 78, 0.6);
+}
+
+@keyframes retroFlicker {
+    0% { transform: scaleX(1) rotate(-3deg) translateY(0); background: #f0ad4e;}
+    100% { transform: scaleX(1.2) rotate(3deg) translateY(-2px); background: #d9534f;}
+}
+
+.flame.out {
+    display: none;
+}
+
+/* --- ENVELOPE --- */
+.envelope-wrapper {
+    height: 220px;
+    margin-top: 10px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.envelope-wrapper.show {
+    display: flex;
+    animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.envelope {
+    position: relative;
+    width: 260px;
+    height: 170px;
+    background-color: #f7e1bd;
+    border: 5px solid #433422;
+    box-shadow: 8px 8px 0px #433422;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.envelope:hover {
+    transform: scale(1.03);
+}
+
+.flap {
+    position: absolute;
+    top: -5px; left: -5px;
+    border-left: 130px solid transparent;
+    border-right: 130px solid transparent;
+    border-top: 95px solid #e9907a; 
+    transform-origin: top;
+    transition: transform 0.5s ease 0.3s;
+    z-index: 4;
+}
+
+.flap::after {
+    content: "";
+    position: absolute;
+    top: -100px; left: -130px;
+    border-left: 130px solid transparent;
+    border-right: 130px solid transparent;
+    border-top: 98px solid #433422;
+    z-index: -1;
+}
+
+.pocket {
+    position: absolute;
+    top: -5px; left: -5px;
+    width: 260px; height: 170px;
+    border-left: 125px solid #f2cf9b;
+    border-right: 125px solid #f2cf9b;
+    border-top: 80px solid transparent;
+    border-bottom: 85px solid #f2cf9b;
+    border-radius: 4px;
+    z-index: 3;
+}
+
+.flower-seal {
+    position: absolute;
+    top: 65px; left: 110px;
+    width: 30px; height: 30px;
+    background: #d9534f;
+    border-radius: 50%;
+    z-index: 5;
+    border: 3px solid #433422;
+    box-shadow: 2px 2px 0 #433422;
+    transition: all 0.3s ease;
+}
+
+.flower-seal::before {
+    content: "";
+    position: absolute;
+    top: -8px; left: -8px;
+    width: 40px; height: 40px;
+    background: #f0ad4e;
+    border-radius: 50%;
+    border: 3px solid #433422;
+    z-index: -1;
+}
+
+.letter {
+    position: absolute;
+    bottom: 5px; left: 15px;
+    width: 220px; height: 145px;
+    background: #fffdf4;
+    border: 4px solid #433422;
+    padding: 15px;
+    z-index: 2;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    text-align: left;
+    overflow: hidden;
+}
+
+.faux-text {
+    width: 100%; height: 6px;
+    background: #cbd5e1;
+    margin-bottom: 8px;
+    border-radius: 2px;
+}
+
+/* ACTIVE ANIMATIONS */
+.envelope.open .flap {
+    transform: rotateX(180deg) translateY(10px);
+    z-index: 1;
+}
+
+.envelope.open .flower-seal {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.envelope.open .letter {
+    transform: translateY(-130px) scale(1.1);
+    z-index: 4;
+    height: auto;
+    max-height: 280px;
+    box-shadow: 8px 8px 0px #433422;
+}
+
+.retro-message {
+    display: none;
+    font-family: 'DynaPuff', cursive;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #433422;
+    white-space: pre-line;
+}
+
+.envelope.open .retro-message {
+    display: block;
+}
+
+.envelope.open .faux-text {
+    display: none;
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.6) translateY(50px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}

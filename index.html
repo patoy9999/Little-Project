@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Groovy Baby! ✌️</title>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@500;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Load the official YouTube Player API Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+
+    <!-- Retro Intro Screen -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-card">
+            <h1>Hey Birthday Girl! 🌸</h1>
+            <p>Somebody made something special for you.</p>
+            <button class="enter-btn" onclick="startExperience()">Unwrap Your Gift ✨</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 id="heading">Blow Out The Candle!</h1>
+        <p class="instruction" id="instruction">🎙️ Lean into your laptop mic and blow to make a wish!</p>
+
+        <!-- Retro Cake & Striped Candle -->
+        <div class="cake-container">
+            <div class="candle">
+                <div class="flame" id="flame"></div>
+            </div>
+            <div class="cake">
+                <div class="cherry-pipes">
+                    <div class="cherry"></div>
+                    <div class="cherry"></div>
+                    <div class="cherry"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pop-up Retro Letter -->
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope" id="envelope" onclick="openEnvelope()">
+                <div class="flap"></div>
+                <div class="pocket"></div>
+                <div class="flower-seal"></div>
+                <div class="letter">
+                    <div class="faux-text"></div>
+                    <div class="faux-text"></div>
+                    <div class="faux-text" style="width: 60%;"></div>
+                    
+                    <div class="retro-message">
+                        <span style="color: #d9534f; font-weight: bold; font-size: 1.1rem;">Hey Birthday Girl! 🌸</span>
+
+                        Happy Birthday to my favorite human! You make my world a whole lot brighter and a lot more fun. 
+
+                        I hope your day is as bright, beautiful, and absolutely amazing as you are. 
+
+                        Click me to close, or just keep me forever! Love you tons! 🎉✨
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden YouTube Player Container -->
+    <div id="ytPlayer" style="position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0;"></div>
+
+    <script>
+        let candleLit = true;
+        let globalStream = null;
+        let player; // YouTube player object
+
+        // This automatically initializes the YouTube video background stream
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytPlayer', {
+                videoId: 'wRZykKDtiEY', // Official video ID for Kabisado
+                playerVars: {
+                    'start': 80,       // Starts exactly at 1:20 (80 seconds)
+                    'loop': 1,
+                    'playlist': 'wRZykKDtiEY',
+                    'controls': 0,
+                    'disablekb': 1
+                },
+                events: {
+                    'onReady': function(event) {
+                        console.log("YouTube Player is loaded and ready.");
+                    }
+                }
+            });
+        }
+
+        function startExperience() {
+            document.getElementById('introOverlay').style.display = 'none';
+
+            // Unmute and play the hidden YouTube track
+            if (player && typeof player.playVideo === 'function') {
+                player.seekTo(80, true);
+                player.setVolume(30); // Low volume initially while candle is lit
+                player.playVideo();
+            }
+
+            initCandleApp();
+        }
+
+        function initCandleApp() {
+            document.getElementById('flame').classList.remove('out');
+            document.getElementById('envelopeWrapper').classList.remove('show');
+            document.getElementById('envelope').classList.remove('open');
+
+            navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+            .then(function(stream) {
+                globalStream = stream;
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const analyser = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+                const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+                analyser.smoothingTimeConstant = 0.4; 
+                analyser.fftSize = 512;
+
+                microphone.connect(analyser);
+                analyser.connect(javascriptNode);
+                javascriptNode.connect(audioContext.destination);
+
+                javascriptNode.onaudioprocess = function() {
+                    if (!candleLit) return;
+
+                    const array = new Uint8Array(analyser.frequencyBinCount);
+                    analyser.getByteFrequencyData(array);
+                    
+                    let lowFreqValues = 0;
+                    const lowFreqRange = 12; 
+
+                    for (let i = 0; i < lowFreqRange; i++) {
+                        lowFreqValues += array[i];
+                    }
+
+                    const lowFreqAverage = lowFreqValues / lowFreqRange;
+
+                    if (lowFreqAverage > 75 && candleLit) {
+                        candleLit = false;
+                        
+                        document.getElementById('flame').classList.add('out');
+                        document.getElementById('heading').innerText = "GROOVY BABY! 🎉";
+                        document.getElementById('instruction').innerText = "Tap the flower seal to unfold your message!";
+                        
+                        // Turn up the song volume to celebrate!
+                        if (player && typeof player.setVolume === 'function') {
+                            player.setVolume(70);
+                        }
+                        
+                        document.getElementById('envelopeWrapper').classList.add('show');
+                        
+                        if (globalStream) {
+                            globalStream.getTracks().forEach(track => track.stop());
+                        }
+                        javascriptNode.onaudioprocess = null; 
+                    }
+                }
+            })
+            .catch(function(err) {
+                document.getElementById('instruction').innerText = "Please enable Microphone Access to blow the candle! 🎤";
+            });
+        }
+
+        function openEnvelope() {
+            const envelope = document.getElementById('envelope');
+            
+            // Backup playback fallback if standard trigger lagged
+            if (player && typeof player.getPlayerState === 'function') {
+                if (player.getPlayerState() !== 1) { // 1 means playing
+                    player.seekTo(80, true);
+                    player.playVideo();
+                }
+            }
+            envelope.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
