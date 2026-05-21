@@ -7,12 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@500;700&family=Fredoka+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     
-    <!-- Load the official YouTube Player API Script -->
     <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
-    <!-- Retro Intro Screen -->
     <div class="intro-overlay" id="introOverlay">
         <div class="intro-card">
             <h1>Happy Birthday Theaa!!!</h1>
@@ -25,7 +23,6 @@
         <h1 id="heading">Make a wish and blow your candle.</h1>
         <p class="instruction" id="instruction">Lean into your laptop mic and blow to make a wish!</p>
 
-        <!-- Retro Cake & Striped Candle -->
         <div class="cake-container">
             <div class="candle">
                 <div class="flame" id="flame"></div>
@@ -39,13 +36,12 @@
             </div>
         </div>
 
-        <!-- Pop-up Retro Letter -->
         <div class="envelope-wrapper" id="envelopeWrapper">
             <div class="envelope" id="envelope" onclick="openEnvelope()">
                 <div class="flap"></div>
                 <div class="pocket"></div>
                 <div class="flower-seal"></div>
-                <div class="letter">
+                <div class="letter" style="overflow-y: auto; max-height: 260px;">
                     <div class="faux-text"></div>
                     <div class="faux-text"></div>
                     <div class="faux-text" style="width: 60%;"></div>
@@ -54,20 +50,21 @@
                         <span style="color: #d9534f; font-weight: bold; font-size: 1.1rem;">Hey Birthday Girl! 🌸</span>
 
                         Happy Birthday to my favorite dutch mill! Wishing you the best in life! which is ako diba? HSHAHSHAHA
+                        
                         Anywayssss I hope you enjoy your day, like really enjoy it bisan gi kapoy kas laag nimo unya sakit pa imo lawas
+                        
                         and also cute kaayo ka mo smile, siopao kaayong aping ganahan unta nako kumoton, pero di lang ko kay makuratan ka
+                        
                         so mao rato im out of time titit na sa piso net, unya maytag di ra isa, duha, or tulo ka itlog ma buak sa imong ulo nig 
                         buntag :p HSHAHSAHHAsAHHSAH
                         
-                        
-
+                        <span style="display: block; text-align: center; font-size: 0.75rem; color: #a18262; margin-top: 15px; font-style: italic;">(Scroll down to read more)</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Hidden YouTube Player Container -->
     <div id="ytPlayer" style="position: absolute; top: -9999px; left: -9999px; width: 1px; height: 1px; opacity: 0;"></div>
 
     <script>
